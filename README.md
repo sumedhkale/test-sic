@@ -5,18 +5,22 @@ The application supports following functionality:
 - Requirement 1 from the challenge - When deleting, allow deletion comments and undeletion
 
 ## Features
-- Built upon RESTful APIs using Flask
-- APIs including proper error handling with response code (HTTP 2xx, 4xx)
+- Built using Flask
 - Uses SQLAlchemy as ORM
 - Uses SQLite for database
 - Code structured into MVC (model, views, controllers)
-- Code contains exception handling to reduce errors
 
 ## DB Features
 - Enum based inventory state (ACTIVE, INACTIVE)
 - Keeps a track of last_deletion_comment, last_deletion_time
 
 ![DB Screenshot](db.png)
+
+## Features
+- Built using Flask as webserver
+- Uses SQLAlchemy as ORM
+- Uses SQLite for database
+- Code structured into MVC (model, views, controllers)
 
 # Steps to run
 
@@ -26,7 +30,14 @@ The application supports following functionality:
 
 ### Run on Replit
 
-    Click Run on Replit UI (uses .replit file)
+Create file .replit in project folder OR use existing and copy the following contents
+```
+language = "python3"
+run = "python main.py"
+```
+
+
+Click Run on Replit UI (uses .replit file)
 
 ### Demo hosted at
     https://test-sic.sumedhk.repl.co/
