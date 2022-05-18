@@ -23,16 +23,32 @@ def create_inventory():
         inventory_obj = inventory_dao.create(**request.get_json())
         return make_response(jsonify({
             "inventory_id": inventory_obj.id
-        }), 202)
+        }), 201)
     except Exception as f:
         raise RestError(err_message='Unable to create inventory. Error : %r' % f)
 
 
-@inventory_bp.route('/<int:inventory_id>/update', methods=['POST'])
+@inventory_bp.route('/<int:inventory_id>', methods=['GET', 'PUT', 'DELETE'])
+def inventory_handler(inventory_id):
+    try:
+        if request.method == 'GET':
+            resp = get_by_id(inventory_id)
+        elif request.method == 'PUT':
+            resp = update_inventory(inventory_id)
+        elif request.method == 'DELETE':
+            resp = delete_inventory(inventory_id)
+        else:
+            raise Exception("Invalid request")
+        return resp
+    except Exception as f:
+        raise
+
+
+# @inventory_bp.route('/<int:inventory_id>/update', methods=['POST'])
 def update_inventory(inventory_id):
     try:
         inv_obj = inventory_dao.get_by_id(inventory_id)
-        if inv_obj.inventory_state == InventoryState.INACTIVE:
+        if not inv_obj or inv_obj.inventory_state == InventoryState.INACTIVE:
             raise Exception("Error in finding inventory item")
 
         inventory_obj = inventory_dao.update_by_id(inventory_id, **request.get_json())
@@ -43,7 +59,7 @@ def update_inventory(inventory_id):
         raise RestError(err_message=f'Unable to update inventory with id = {inventory_id}. Reason: %r' % str(f))
 
 
-@inventory_bp.route('/<int:inventory_id>', methods=['GET'])
+# @inventory_bp.route('/<int:inventory_id>', methods=['GET'])
 def get_by_id(inventory_id):
     try:
         inventory_obj = inventory_dao.get_by_id(inventory_id)
@@ -54,7 +70,7 @@ def get_by_id(inventory_id):
         raise RestError(err_message=f'Unable to get inventory with id = {inventory_id}. Reason: %r' % str(f))
 
 
-@inventory_bp.route('/<int:inventory_id>/delete', methods=['POST'])
+# @inventory_bp.route('/<int:inventory_id>/delete', methods=['POST'])
 def delete_inventory(inventory_id):
     try:
         inv_obj = inventory_dao.get_by_id(inventory_id)
