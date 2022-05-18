@@ -46,6 +46,7 @@ def create_app():
         app.register_blueprint(inventory_bp)
 
         # create tables
+        db.drop_all()
         db.create_all()
 
         # add error handler
