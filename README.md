@@ -10,11 +10,26 @@ The application supports following functionality:
 - Uses SQLite for database
 - Code structured into MVC (model, views, controllers)
 
-## DB Features
-- Enum based inventory state (ACTIVE, INACTIVE)
-- Keeps a track of last_deletion_comment, last_deletion_time
+## Database
+
+### Schema
+Table = 'inventory'
+- id (int) : Auto incremented id
+- display_name (string) : display name of inventory item
+- inventory_state (enum) : state of inventory item (ACTIVE, INACTIVE)
+- last_deletion_comment (string) : comment added during last deletion
+- last_deletion_time (dateTime) : last deletion time
+- last_undeleted_time (dateTime) : last undeletion time
+- created_on (dateTime) : item created at
+- last_inventory_history_id (int) : can be used for future purposes
 
 ![DB Screenshot](db.png)
+
+
+### Features
+- Enum based inventory state (ACTIVE, INACTIVE) for deletion
+- Keeps a track of last_deletion_comment, last_deletion_time
+
 
 ## Features
 - Built using Flask as webserver
@@ -160,7 +175,7 @@ Change few properties of inventory items e.g. quantity, display_name
 
 `PUT /inventory/:id`
 
-    curl --request PUT --url http://localhost:5000/inventory/1 --header 'Content-Type: application/json' --data '{"display_name" : "test_inv2","quantity" : 111}'
+    curl --request PUT --url http://localhost:5000/inventory/1/update --header 'Content-Type: application/json' --data '{"display_name" : "test_inv2", "quantity" : 111}'
 
 ### Response
 
@@ -181,7 +196,7 @@ Change few properties of inventory items e.g. quantity, display_name
 
 `DELETE /inventory/:id`
 
-    curl --request DELETE --url http://localhost:5000/inventory/1 --header 'Content-Type: application/json' --data '{"last_deletion_comment" : "out of stock till 05/30"}'
+    curl --request DELETE --url http://localhost:5000/inventory/1/delete --header 'Content-Type: application/json' --data '{"last_deletion_comment" : "out of stock till 05/30"}'
 
 ### Response
 
@@ -201,8 +216,7 @@ Change few properties of inventory items e.g. quantity, display_name
 
 `POST /inventory/:id/undelete`
 
-    curl --request POST --url http://localhost:5000/inventory/1/undelete --header 'Content-Type: application/json' --data '{"quantity" : 222
-}'
+    curl --request POST --url http://localhost:5000/inventory/1/undelete --header 'Content-Type: application/json' --data '{"quantity" : 222}'
 
 ### Response
 
