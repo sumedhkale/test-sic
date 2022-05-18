@@ -23,20 +23,20 @@ class RestError(Exception):
         return rv
 
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'super secret key'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shopify.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'shopify.db')
 db = SQLAlchemy()
 
 
 def create_app():
     """Create Flask application."""
     app = Flask(__name__, instance_relative_config=False)
-    app.config.from_object('config.Config')
+    # app.config.from_object('config.Config')
 
     db.init_app(app)
+
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SECRET_KEY'] = 'super secret key'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shopify.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'shopify.db')
 
     with app.app_context():
         # Import parts of our application
@@ -45,6 +45,10 @@ def create_app():
         # Register Blueprints
         app.register_blueprint(inventory_bp)
 
+        # create tables
+        db.create_all()
+
+        # add error handler
         app.register_error_handler(RestError, invalid_api_usage)
 
         return app
