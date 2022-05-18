@@ -160,7 +160,7 @@ Change few properties of inventory items e.g. quantity, display_name
 
 `PUT /inventory/:id`
 
-    curl --request POST --url http://localhost:5000/inventory/1/update --header 'Content-Type: application/json' --data '{"display_name" : "test_inv2", "quantity" : 111}'
+    curl --request PUT --url http://localhost:5000/inventory/1 --header 'Content-Type: application/json' --data '{"display_name" : "test_inv2","quantity" : 111}'
 
 ### Response
 
@@ -181,7 +181,7 @@ Change few properties of inventory items e.g. quantity, display_name
 
 `DELETE /inventory/:id`
 
-    curl --request DELETE --url http://localhost:5000/inventory/1/delete --header 'Content-Type: application/json' --data '{"last_deletion_comment" : "out of stock till 05/30"}'
+    curl --request DELETE --url http://localhost:5000/inventory/1 --header 'Content-Type: application/json' --data '{"last_deletion_comment" : "out of stock till 05/30"}'
 
 ### Response
 
